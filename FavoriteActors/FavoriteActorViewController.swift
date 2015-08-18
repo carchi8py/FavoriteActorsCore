@@ -107,6 +107,15 @@ class FavoriteActorViewController : UITableViewController, ActorPickerViewContro
 
                 // Append the actor to the array
                 self.actors.append(actorToBeAdded)
+                
+                // Save the context.
+                var error: NSError? = nil
+                
+                self.sharedContext.save(&error)
+                
+                if let error = error {
+                    println("error saving context: \(error.localizedDescription)")
+                }
             }
         }
     }
