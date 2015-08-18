@@ -20,8 +20,7 @@ class FavoriteActorViewController : UITableViewController, ActorPickerViewContro
         
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "addActor")
-        
-        //Grab Actors out of core Data
+
         actors = fetchAllActors()
     }
     
@@ -37,14 +36,14 @@ class FavoriteActorViewController : UITableViewController, ActorPickerViewContro
         let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
         return delegate.managedObjectContext!
     }
-    
+
     /**
-     * This is the convenience method for fetching all persistent actors. 
+     * This is the convenience method for fetching all persistent actors.
      * Right now there are three actors pre-loaded into Core Data. Eventually
      * Core Data will only store the actors that the users chooses.
      *
      * The method creates a "Fetch Request" and then executes the request on
-     * the shared context. 
+     * the shared context.
      */
     
     func fetchAllActors() -> [Person] {
@@ -112,7 +111,7 @@ class FavoriteActorViewController : UITableViewController, ActorPickerViewContro
         
         if let localImage = actor.image {
             cell.actorImageView.image = localImage
-        } else if actor.imagePath == nil || actor.imagePath == "" {
+        } else if actor.imagePath == "" {
             cell.actorImageView.image = UIImage(named: "personNoImage")
         }
             
