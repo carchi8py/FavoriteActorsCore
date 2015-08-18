@@ -20,10 +20,6 @@ class FavoriteActorViewController : UITableViewController, ActorPickerViewContro
         
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "addActor")
-        
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let context = appDelegate.managedObjectContext!
-        println("context has changes to save: \(context.hasChanges)")
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -31,7 +27,14 @@ class FavoriteActorViewController : UITableViewController, ActorPickerViewContro
         
         tableView.reloadData()
     }
-
+    
+    // MARK: - Core Data Convenience. This will be useful for fetching. And for adding and saving objects as well. 
+    
+    var sharedContext: NSManagedObjectContext {
+        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        return delegate.managedObjectContext!
+    }
+    
     // Mark: - Actions
     
     func addActor() {
@@ -55,7 +58,7 @@ class FavoriteActorViewController : UITableViewController, ActorPickerViewContro
                 }
             }
             
-            // ??? What should we do here, with Core Data ???
+            self.actors.append(newActor)
         }
     }
     

@@ -32,10 +32,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let fetchRequest = NSFetchRequest(entityName: "Person")
         let actorCount = context.executeFetchRequest(fetchRequest, error: nil)?.count ?? 0
         
+        var dictionary: [String : AnyObject]
+        var person: Person
+        
         if actorCount == 0 {
             
-            let kevinBaconDictionary = ["name" : "Kevin Bacon", "id" : 21305, "profile_path":"/p1uCaOjxSC1xS5TgmD4uloAkbLd.jpg"]
-            let kevinBacon = Person(dictionary: kevinBaconDictionary, context: context)
+            dictionary = ["name" : "LL Cool J", "id" : 36424, "profile_path":"/bPZmMROI8KXbZl3ljNRmkU6Tnb3.jpg"]
+            person = Person(dictionary: dictionary, context: context)
+            
+            dictionary = ["name" : "Ellen Page", "id" : 27578, "profile_path":"/vDunkYxyQPkzx9EwkfSZVCSzBlO.jpg"]
+            person = Person(dictionary: dictionary, context: context)
+            
+            dictionary = ["name" : "Bill Murray", "id" : 1532, "profile_path":"/eb58HuFIrxS0zUmbmW4d8YXTbje.jpg"]
+            person = Person(dictionary: dictionary, context: context)
+            
             
             context.save(&error)
             
@@ -43,6 +53,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 println(error.description)
             }
         }
+    }
+    
+    func applicationWillResignActive(application: UIApplication) {
+        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    }
+    
+    func applicationDidEnterBackground(application: UIApplication) {
+        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
+        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    }
+    
+    func applicationWillEnterForeground(application: UIApplication) {
+        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    }
+    
+    func applicationDidBecomeActive(application: UIApplication) {
+        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    }
+    
+    func applicationWillTerminate(application: UIApplication) {
+        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
     // MARK: - Core Data stack
@@ -111,4 +143,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 }
-
