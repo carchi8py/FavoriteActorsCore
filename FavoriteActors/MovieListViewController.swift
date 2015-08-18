@@ -26,7 +26,7 @@ class MovieListViewController : UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        if actor.movies.isEmpty {
+        if actor.movies == nil || actor.movies!.isEmpty {
             
             let resource = TheMovieDB.Resources.PersonIDMovieCredits
             var parameters = [TheMovieDB.Keys.ID : actor.id]
@@ -51,6 +51,15 @@ class MovieListViewController : UITableViewController {
                         dispatch_async(dispatch_get_main_queue()) {
                             self.tableView.reloadData()
                         }
+                        
+                        // Save the Context
+                        var error: NSError? = nil
+                        self.sharedContext.save(&error)
+                        
+                        if let error = error {
+                            println(error)
+                        }
+                        
                     } else {
                         let error = NSError(domain: "Movie for Person Parsing. Cant find cast in \(JSONResult)", code: 0, userInfo: nil)
                         self.alertViewForError(error)
@@ -72,15 +81,16 @@ class MovieListViewController : UITableViewController {
     // MARK: - Table View
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return actor.movies.count
+        return actor.movies?.count ?? 0
     }
-        /**
+    
+    /**
     The downloading of movie posters is handled here. Notice how the method uses a unique
     table view cell that holds on to a task so that it can be canceled.
     */
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let movie = actor.movies[indexPath.row]
+        let movie = actor.movies![indexPath.row]
         let CellIdentifier = "MovieCell"
         var posterImage = UIImage(named: "posterPlaceHoldr")
         
@@ -91,7 +101,7 @@ class MovieListViewController : UITableViewController {
         
         // Set the Movie Poster Image
         
-        if movie.posterImage == "" {
+        if movie.posterPath == nil || movie.posterPath == "" {
             posterImage = UIImage(named: "noImage")
         } else if movie.posterImage != nil {
             posterImage = movie.posterImage
@@ -141,7 +151,7 @@ class MovieListViewController : UITableViewController {
         
         switch (editingStyle) {
         case .Delete:
-            actor.movies.removeAtIndex(indexPath.row)
+            actor.movies!.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
         default:
             break
